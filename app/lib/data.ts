@@ -1,6 +1,6 @@
 import { db } from "@/firebase"
 import { collection, getDocs, getDoc, doc } from "firebase/firestore";
-import { Circuit, Exercise, CircuitExercise, EnrichedCircuit, RawCircuitExercise } from "./definitions";
+import { Circuit, Exercise, CircuitExercise, EnrichedCircuit, RawCircuitExercise, Workout } from "./definitions";
 
 export async function fetchExercises():Promise<Exercise[]> {
     try{
@@ -80,3 +80,18 @@ export async function updateCircuitsWithExercises(circuitList: Circuit[]): Promi
   
     return updatedCircuits;
   }
+
+  export async function fetchWorkouts():Promise<Workout[]> {
+    try{
+      const workoutCollection = collection(db, "workouts");
+      const workoutSnapshot = await getDocs(workoutCollection);
+      const workoutData: Workout[] = workoutSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Workout[];
+      return workoutData
+    } catch (error){
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch workouts.');
+    }
+}

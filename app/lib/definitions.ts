@@ -34,3 +34,9 @@ export type CircuitExercise = RawCircuitExercise & {
 export type EnrichedCircuit = Omit<Circuit, 'exercises'> & {
   exercises: CircuitExercise[];
 };
+
+type Workout = {
+  id: string,
+  name: string,
+  circuits: string[]
+}
